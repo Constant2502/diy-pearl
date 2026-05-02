@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DIY Pearl - 拼豆模拟器</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <aside id="sidebar">
+      <h1>🧩 DIY Pearl</h1>
+
+      <section id="tool-section">
+        <h3>工具</h3>
+        <div class="tool-group" id="toolbar">
+          <button data-tool="brush" class="active" title="画笔">✏️ 画笔</button>
+          <button data-tool="eraser" title="橡皮">🧹 橡皮</button>
+          <button data-tool="eyedropper" title="吸管">💉 吸管</button>
+        </div>
+      </section>
+
+      <section id="palette-section">
+        <h3>颜色</h3>
+        <div id="palette"></div>
+        <div id="custom-color-row">
+          <label>自定义</label>
+          <input type="color" id="custom-color" value="#E74C3C">
+        </div>
+      </section>
+
+      <section id="action-section">
+        <h3>操作</h3>
+        <div id="actions">
+          <button id="undo">↩ 撤销</button>
+          <button id="redo">↪ 重做</button>
+          <button id="iron-btn">🔥 熨烫</button>
+          <button id="save-btn">💾 保存图片</button>
+          <button id="clear-btn">🗑 清空</button>
+        </div>
+      </section>
+
+      <section id="grid-section">
+        <h3>画布</h3>
+        <div id="grid-settings">
+          <label>宽度 <input type="number" id="grid-w" value="20" min="3" max="60"></label>
+          <label>高度 <input type="number" id="grid-h" value="20" min="3" max="60"></label>
+          <button id="resize-btn">调整尺寸</button>
+        </div>
+      </section>
+    </aside>
+
+    <main id="canvas-container">
+      <canvas id="canvas"></canvas>
+    </main>
+  </div>
+
+  <script src="src/grid.js"></script>
+  <script src="src/history.js"></script>
+  <script src="src/palette.js"></script>
+  <script src="src/iron.js"></script>
+  <script src="src/canvas.js"></script>
+  <script src="src/tools.js"></script>
+  <script src="src/main.js"></script>
+</body>
+</html>
