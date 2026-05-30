@@ -48,11 +48,25 @@
           <button id="resize-btn">调整尺寸</button>
         </div>
       </section>
+
+      <section id="reward-section">
+        <p>觉得这个小工具不错的话，请<button id="reward-btn">支持</button>一下。</p>
+      </section>
     </aside>
 
     <main id="canvas-container">
       <canvas id="canvas"></canvas>
     </main>
+  </div>
+
+  <div id="reward-modal" aria-hidden="true">
+    <div id="reward-backdrop"></div>
+    <div id="reward-dialog" role="dialog" aria-modal="true" aria-labelledby="reward-title">
+      <button id="reward-close" aria-label="关闭">×</button>
+      <h2 id="reward-title">感谢支持</h2>
+      <p>打开支付宝扫一扫，支持 DIY Pearl 继续变好。</p>
+      <img src="assets/alipay-reward.png" alt="支付宝收款码">
+    </div>
   </div>
 
   <script src="src/grid.js"></script>

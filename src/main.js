@@ -91,5 +91,28 @@
     palette.addColor(e.target.value);
   });
 
+  const rewardModal = document.getElementById('reward-modal');
+  const rewardBtn = document.getElementById('reward-btn');
+  const rewardClose = document.getElementById('reward-close');
+  const rewardBackdrop = document.getElementById('reward-backdrop');
+
+  function openRewardModal() {
+    rewardModal.classList.add('open');
+    rewardModal.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeRewardModal() {
+    rewardModal.classList.remove('open');
+    rewardModal.setAttribute('aria-hidden', 'true');
+  }
+
+  rewardBtn.addEventListener('click', openRewardModal);
+  rewardClose.addEventListener('click', closeRewardModal);
+  rewardBackdrop.addEventListener('click', closeRewardModal);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeRewardModal();
+  });
+
   window.addEventListener('resize', resizeCanvas);
 })();

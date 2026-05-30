@@ -1,0 +1,7 @@
+# Local payment / reward QR images. Keep these out of Git.
+assets/alipay-reward.png
+assets/*reward*.png
+assets/*payment*.png
+assets/*qrcode*.png
+assets/*qr-code*.png
+
