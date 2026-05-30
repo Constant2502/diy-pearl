@@ -8,6 +8,10 @@ window.DiyPearl.CanvasRenderer = class CanvasRenderer {
     this.grid = grid;
     this.ironed = false;
     this.cellSize = 30;
+    this.baseCellSize = 30;
+    this.zoom = 1;
+    this.minZoom = 0.6;
+    this.maxZoom = 4;
     this.gap = 2;
   }
 
@@ -29,7 +33,21 @@ window.DiyPearl.CanvasRenderer = class CanvasRenderer {
 
     const cw = Math.floor(maxW / this.grid.width);
     const ch = Math.floor(maxH / this.grid.height);
-    this.cellSize = Math.max(8, Math.min(cw, ch, 48));
+    this.baseCellSize = Math.max(8, Math.min(cw, ch, 48));
+    this._applyZoom();
+  }
+
+  getZoom() {
+    return this.zoom;
+  }
+
+  setZoom(zoom) {
+    this.zoom = Math.max(this.minZoom, Math.min(this.maxZoom, zoom));
+    this._applyZoom();
+  }
+
+  _applyZoom() {
+    this.cellSize = Math.max(4, this.baseCellSize * this.zoom);
 
     this.canvas.width = this.grid.width * this.cellSize;
     this.canvas.height = this.grid.height * this.cellSize;
@@ -127,6 +145,15 @@ window.DiyPearl.CanvasRenderer = class CanvasRenderer {
 
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, w, h);
+
+    if (this.ironed) {
+      const regions = computeRegions(this.grid);
+      ctx.save();
+      ctx.translate(padding, padding);
+      renderIroned(ctx, this.grid, regions, beadSize);
+      ctx.restore();
+      return cvs.toDataURL('image/png');
+    }
 
     const r = (beadSize - gap * 2) / 2;
 

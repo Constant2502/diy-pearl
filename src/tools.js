@@ -10,6 +10,9 @@ window.DiyPearl.Tools = class Tools {
     this.isDrawing = false;
     this.drew = false;
     this.lastCell = null;
+    this.isPinching = false;
+    this.pinchStartDistance = 0;
+    this.pinchStartZoom = 1;
 
     this._setupEvents();
   }
@@ -28,23 +31,69 @@ window.DiyPearl.Tools = class Tools {
 
     cvs.addEventListener('touchstart', (e) => {
       e.preventDefault();
+      if (e.touches.length > 1) {
+        this._up();
+        this._startPinch(e.touches);
+        return;
+      }
       const t = e.touches[0];
       this._down({ clientX: t.clientX, clientY: t.clientY });
     }, { passive: false });
 
     cvs.addEventListener('touchmove', (e) => {
       e.preventDefault();
+      if (this.isPinching && e.touches.length > 1) {
+        this._pinch(e.touches);
+        return;
+      }
+      if (e.touches.length > 1) {
+        this._up();
+        this._startPinch(e.touches);
+        return;
+      }
       const t = e.touches[0];
       this._move({ clientX: t.clientX, clientY: t.clientY });
     }, { passive: false });
 
     cvs.addEventListener('touchend', (e) => {
       e.preventDefault();
+      if (this.isPinching) {
+        if (e.touches.length > 1) {
+          this._startPinch(e.touches);
+          return;
+        }
+        this.isPinching = false;
+      }
+      this._up();
+    }, { passive: false });
+
+    cvs.addEventListener('touchcancel', (e) => {
+      e.preventDefault();
+      this.isPinching = false;
       this._up();
     }, { passive: false });
   }
 
+  _startPinch(touches) {
+    this.isPinching = true;
+    this.pinchStartDistance = this._touchDistance(touches);
+    this.pinchStartZoom = this.renderer.getZoom();
+  }
+
+  _pinch(touches) {
+    const distance = this._touchDistance(touches);
+    if (this.pinchStartDistance <= 0) return;
+    this.renderer.setZoom(this.pinchStartZoom * (distance / this.pinchStartDistance));
+  }
+
+  _touchDistance(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.hypot(dx, dy);
+  }
+
   _down(e) {
+    if (this.isPinching) return;
     this.isDrawing = true;
     this.drew = false;
     this.lastCell = this.renderer.getCellFromPoint(e.clientX, e.clientY);

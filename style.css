@@ -240,6 +240,7 @@ html, body {
   box-shadow: 0 4px 24px rgba(0,0,0,0.10);
   cursor: crosshair;
   image-rendering: auto;
+  touch-action: none;
 }
 
 #undo:disabled, #redo:disabled {
@@ -248,19 +249,41 @@ html, body {
 }
 
 @media (max-width: 640px) {
+  :root {
+    --mobile-controls-h: 42vh;
+  }
+
+  html, body {
+    height: 100dvh;
+  }
+
   #app {
     flex-direction: column;
+    height: 100dvh;
   }
+
   #sidebar {
+    order: 2;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
     min-width: unset;
-    max-height: 45vh;
+    height: var(--mobile-controls-h);
+    max-height: var(--mobile-controls-h);
+    padding: 12px 14px calc(14px + env(safe-area-inset-bottom));
     border-right: none;
-    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+    overflow-y: auto;
   }
+
   #canvas-container {
-    flex: 1;
-    min-height: 0;
+    order: 1;
+    flex: 0 0 calc(100dvh - var(--mobile-controls-h));
+    width: 100%;
+    height: calc(100dvh - var(--mobile-controls-h));
+    min-height: calc(100dvh - var(--mobile-controls-h));
     padding: 10px;
   }
 }
